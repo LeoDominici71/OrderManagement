@@ -7,19 +7,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
 @Entity
 @Table(name = "tb_order")
 public class Orders {
@@ -36,7 +34,12 @@ public class Orders {
 	private String street;
 	private String complement;
 	private String expectedTimeToDeliver;
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	 @ManyToMany(cascade = CascadeType.ALL)
+	    @JoinTable(
+	        name = "order_products",
+	        joinColumns = @JoinColumn(name = "order_id"),
+	        inverseJoinColumns = @JoinColumn(name = "product_id")
+	    )
 	private List<Products> products;
 
 }

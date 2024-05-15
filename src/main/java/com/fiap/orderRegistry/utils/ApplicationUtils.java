@@ -28,7 +28,7 @@ public class ApplicationUtils {
 		List<Products> convertedProducts = new ArrayList<>();
 		for (ProductResponse productResponse : products) {
 			Products product = new Products();
-			product.setId(productResponse.getId());
+			product.setProductCode(productResponse.getId());
 			product.setName(productResponse.getName());
 			product.setDescription(productResponse.getDescription());
 			product.setStock(productResponse.getStock());
@@ -42,6 +42,7 @@ public class ApplicationUtils {
 		orders.setDistrict(userDTO.getBairro());
 		orders.setStreet(userDTO.getRua());
 		orders.setComplement(userDTO.getComplemento());
+		orders.setUserId(userDTO.getId());
 		orders.setProducts(convertedProducts);
 
 		return orders;

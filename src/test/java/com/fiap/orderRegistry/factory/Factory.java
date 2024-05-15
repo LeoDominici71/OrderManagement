@@ -14,7 +14,7 @@ public class Factory {
 	public static OrderRequest createOrderRequest() {
 		OrderRequest request = new OrderRequest();
 		Products products = new Products();
-		products.setId(1L);
+		products.setProductCode(1L);
 		products.setName("Mouse");
 		List<Products> listProducts = new ArrayList<>();
 		listProducts.add(products);
@@ -26,7 +26,7 @@ public class Factory {
 	public static OrderRequest createOrderRequestWithNullId() {
 		OrderRequest request = new OrderRequest();
 		Products products = new Products();
-		products.setId(1L);
+		products.setProductCode(1L);
 		products.setName("Mouse");
 		List<Products> listProducts = new ArrayList<>();
 		listProducts.add(products);
@@ -37,7 +37,7 @@ public class Factory {
 	public static Orders createOrder() {
 		Orders response = new Orders();
 		Products products = new Products();
-		products.setId(1L);
+		products.setProductCode(1L);
 		products.setName("Mouse");
 		products.setDescription("mouse");
 		products.setPrice(20.0);
