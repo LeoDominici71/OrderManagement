@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fiap.orderRegistry.entities.OrderRequest;
+import com.fiap.orderRegistry.entities.OrderRequestPayment;
 import com.fiap.orderRegistry.entities.OrderRequestUpdate;
 import com.fiap.orderRegistry.entities.Orders;
 import com.fiap.orderRegistry.service.OrderService;
@@ -60,9 +61,17 @@ public class OrderController {
 	}
 	
 	@PutMapping(value = "/atualiza/{id}")
-	public ResponseEntity<Orders> orderUpdate(@RequestBody OrderRequestUpdate orders, Long id){
+	public ResponseEntity<Orders> orderUpdate(@RequestBody OrderRequestUpdate orders, @PathVariable Long id){
 		Orders ordersUpdated = service.updateOrder(id, orders);
-		OrderController.log.info("OUT - OrdersRegistered");
+		OrderController.log.info("OUT - OrdersUpdated");
+		return ResponseEntity.ok().body(ordersUpdated);
+
+	}
+	
+	@PutMapping(value = "/payment/{id}")
+	public ResponseEntity<Orders> orderPayment(@RequestBody OrderRequestPayment orders, @PathVariable Long id){
+		Orders ordersUpdated = service.payOrder(id, orders);
+		OrderController.log.info("OUT - OrdersPaid");
 		return ResponseEntity.ok().body(ordersUpdated);
 
 	}

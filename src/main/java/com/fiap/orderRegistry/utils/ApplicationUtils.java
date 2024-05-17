@@ -3,6 +3,8 @@ package com.fiap.orderRegistry.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fiap.orderRegistry.constants.ApplicationConstants;
+import com.fiap.orderRegistry.entities.OrderRequestPayment;
 import com.fiap.orderRegistry.entities.OrderRequestUpdate;
 import com.fiap.orderRegistry.entities.Orders;
 import com.fiap.orderRegistry.entities.ProductResponse;
@@ -21,6 +23,16 @@ public class ApplicationUtils {
 		
 		return orderAntigo;
 	}
+	
+	public static Orders updateOrderPayment(Orders orderAntigo, OrderRequestPayment orderAtual) {
+		orderAntigo.setStatus(ApplicationConstants.CONFIRMADO);
+		if (orderAtual.getCardNumber() != null) {
+			orderAntigo.setExpectedTimeToDeliver(orderAtual.getCardNumber());
+		}
+		
+		return orderAntigo;
+	}
+
 
 	public static Orders toOrders(UserDTO userDTO, List<ProductResponse> products) {
 		Orders orders = new Orders();

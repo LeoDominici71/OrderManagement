@@ -33,6 +33,7 @@ public class Orders {
 	private String district;
 	private String street;
 	private String complement;
+	private Double price;
 	private String expectedTimeToDeliver;
 	 @ManyToMany(cascade = CascadeType.ALL)
 	    @JoinTable(

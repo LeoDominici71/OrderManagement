@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.fiap.orderRegistry.entities.OrderRequest;
+import com.fiap.orderRegistry.entities.OrderRequestPayment;
 import com.fiap.orderRegistry.entities.OrderRequestUpdate;
 import com.fiap.orderRegistry.entities.Orders;
 
@@ -22,5 +23,7 @@ public interface OrderService {
 	List<Orders> getAllOrders();
 
 	List<Orders> getAllOrdersByStatus(String status);
+	
+	Orders payOrder(Long id, OrderRequestPayment order);
 
 }

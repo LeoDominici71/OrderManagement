@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.fiap.orderRegistry.constants.ApplicationConstants;
 import com.fiap.orderRegistry.entities.OrderRequest;
+import com.fiap.orderRegistry.entities.OrderRequestPayment;
 import com.fiap.orderRegistry.entities.OrderRequestUpdate;
 import com.fiap.orderRegistry.entities.Orders;
 import com.fiap.orderRegistry.entities.ProductResponse;
@@ -43,8 +44,13 @@ public class OrderServiceImpl implements OrderService {
 			List<ProductResponse> productResponseList = integration.getProducts(orders);
 
 			Orders statusConfirmed = ApplicationUtils.toOrders(userDto, productResponseList);
-			statusConfirmed.setStatus(ApplicationConstants.SOLICITADO);
+			statusConfirmed.setStatus(ApplicationConstants.AGUARDANDO_PAGAMENTO);
 
+			Double totalPrice = productResponseList.stream()
+                    .mapToDouble(ProductResponse::getPrice)
+                    .sum();
+			statusConfirmed.setPrice(totalPrice);			
+			
 			Orders orderSaved = repository.save(statusConfirmed);
 
 			return orderSaved;
@@ -98,6 +104,26 @@ public class OrderServiceImpl implements OrderService {
 
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Error in updating order");
+		}
+	}
+	
+	@Override
+	public Orders payOrder(Long id, OrderRequestPayment order) {
+		// TODO Auto-generated method stub
+		OrderServiceImpl.log.info("IN - Pay Order by Id");
+
+		try {
+
+			Optional<Orders> request = repository.findById(id);
+			Orders orderToUpdate = request.orElseThrow(() -> new EntityNotFoundException("Order Not Found"));
+			if(orderToUpdate.getStatus().equals(ApplicationConstants.CONFIRMADO) || order.getCardNumber().length() < 12) {
+				throw new IllegalArgumentException("Error in paying order");
+			}
+			Orders orderSaved = repository.save(ApplicationUtils.updateOrderPayment(orderToUpdate, order));
+			return orderSaved;
+
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Error in paying order");
 		}
 	}
 
