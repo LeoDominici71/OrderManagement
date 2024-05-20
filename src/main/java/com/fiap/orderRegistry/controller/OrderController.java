@@ -19,7 +19,9 @@ import com.fiap.orderRegistry.entities.OrderRequest;
 import com.fiap.orderRegistry.entities.OrderRequestPayment;
 import com.fiap.orderRegistry.entities.OrderRequestUpdate;
 import com.fiap.orderRegistry.entities.Orders;
+import com.fiap.orderRegistry.entities.OrdersResponse;
 import com.fiap.orderRegistry.service.OrderService;
+import com.fiap.orderRegistry.utils.ApplicationUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,6 +62,13 @@ public class OrderController {
 
 	}
 	
+	@PostMapping("/saveAll")
+	public ResponseEntity<?> saveAllOrders(@RequestBody List<Orders> orders){
+		service.saveAllOrders(orders);
+		OrderController.log.info("OUT - OrdersSaveAll");
+		return ResponseEntity.noContent().build();
+	}
+	
 	@PutMapping(value = "/atualiza/{id}")
 	public ResponseEntity<Orders> orderUpdate(@RequestBody OrderRequestUpdate orders, @PathVariable Long id){
 		Orders ordersUpdated = service.updateOrder(id, orders);
@@ -77,10 +86,10 @@ public class OrderController {
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Orders> orderById(@PathVariable Long id){
+	public ResponseEntity<OrdersResponse> orderById(@PathVariable Long id){
 		Orders ordersUpdated = service.getOrderById(id);
 		OrderController.log.info("OUT - OrdersById");
-		return ResponseEntity.ok().body(ordersUpdated);
+		return ResponseEntity.ok().body(ApplicationUtils.toOrdersResponse(ordersUpdated));
 
 	}
 	

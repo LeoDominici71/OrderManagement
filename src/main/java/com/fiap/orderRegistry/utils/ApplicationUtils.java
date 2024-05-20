@@ -7,6 +7,7 @@ import com.fiap.orderRegistry.constants.ApplicationConstants;
 import com.fiap.orderRegistry.entities.OrderRequestPayment;
 import com.fiap.orderRegistry.entities.OrderRequestUpdate;
 import com.fiap.orderRegistry.entities.Orders;
+import com.fiap.orderRegistry.entities.OrdersResponse;
 import com.fiap.orderRegistry.entities.ProductResponse;
 import com.fiap.orderRegistry.entities.Products;
 import com.fiap.orderRegistry.entities.UserDTO;
@@ -21,13 +22,17 @@ public class ApplicationUtils {
 			orderAntigo.setExpectedTimeToDeliver(orderAtual.getExpectedTimeToDeliver());
 		}
 		
+		if(orderAtual.getLocalization() != null) {
+			orderAntigo.setLocalization(orderAtual.getLocalization());
+		}
+		
 		return orderAntigo;
 	}
 	
 	public static Orders updateOrderPayment(Orders orderAntigo, OrderRequestPayment orderAtual) {
-		orderAntigo.setStatus(ApplicationConstants.CONFIRMADO);
 		if (orderAtual.getCardNumber() != null) {
-			orderAntigo.setExpectedTimeToDeliver(orderAtual.getCardNumber());
+			orderAntigo.setStatus(ApplicationConstants.CONFIRMADO);
+
 		}
 		
 		return orderAntigo;
@@ -56,6 +61,24 @@ public class ApplicationUtils {
 		orders.setComplement(userDTO.getComplemento());
 		orders.setUserId(userDTO.getId());
 		orders.setProducts(convertedProducts);
+
+		return orders;
+
+	}
+	
+	public static OrdersResponse toOrdersResponse(Orders order) {
+		OrdersResponse orders = new OrdersResponse();
+
+        orders.setId(order.getId());
+        orders.setStatus(order.getStatus());
+		orders.setUserName(order.getUserName());
+		orders.setCity(order.getCity());
+		orders.setZipCode(order.getCity());
+		orders.setDistrict(order.getDistrict());
+		orders.setStreet(order.getStreet());
+		orders.setComplement(order.getComplement());
+		orders.setExpectedTimeToDeliver(order.getExpectedTimeToDeliver());
+		orders.setLocalization(order.getLocalization());
 
 		return orders;
 

@@ -34,6 +34,7 @@ public class Orders {
 	private String street;
 	private String complement;
 	private Double price;
+	private String localization;
 	private String expectedTimeToDeliver;
 	 @ManyToMany(cascade = CascadeType.ALL)
 	    @JoinTable(

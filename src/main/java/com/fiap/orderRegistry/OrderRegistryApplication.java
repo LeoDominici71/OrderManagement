@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 
-@LoadBalancerClient(name = "orderManagement")
 @EnableDiscoveryClient
 @SpringBootApplication
 public class OrderRegistryApplication {

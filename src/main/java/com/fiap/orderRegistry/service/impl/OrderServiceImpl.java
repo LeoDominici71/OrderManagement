@@ -39,21 +39,33 @@ public class OrderServiceImpl implements OrderService {
 
 		try {
 			OrderServiceImpl.log.info("IN - Register Order");
-			
+
 			UserDTO userDto = integration.getUserDTO(orders);
 			List<ProductResponse> productResponseList = integration.getProducts(orders);
 
 			Orders statusConfirmed = ApplicationUtils.toOrders(userDto, productResponseList);
 			statusConfirmed.setStatus(ApplicationConstants.AGUARDANDO_PAGAMENTO);
 
-			Double totalPrice = productResponseList.stream()
-                    .mapToDouble(ProductResponse::getPrice)
-                    .sum();
-			statusConfirmed.setPrice(totalPrice);			
-			
+			Double totalPrice = productResponseList.stream().mapToDouble(ProductResponse::getPrice).sum();
+			statusConfirmed.setPrice(totalPrice);
+
 			Orders orderSaved = repository.save(statusConfirmed);
 
 			return orderSaved;
+
+		} catch (Exception e) {
+			throw new GeneralClientSystemException("Error in register order");
+		}
+	}
+
+	@Override
+	public void saveAllOrders(List<Orders> orders) {
+		// TODO Auto-generated method stub
+
+		try {
+			OrderServiceImpl.log.info("IN - Register Order");
+
+			repository.saveAll(orders);
 
 		} catch (Exception e) {
 			throw new GeneralClientSystemException("Error in register order");
@@ -106,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new IllegalArgumentException("Error in updating order");
 		}
 	}
-	
+
 	@Override
 	public Orders payOrder(Long id, OrderRequestPayment order) {
 		// TODO Auto-generated method stub
@@ -116,7 +128,8 @@ public class OrderServiceImpl implements OrderService {
 
 			Optional<Orders> request = repository.findById(id);
 			Orders orderToUpdate = request.orElseThrow(() -> new EntityNotFoundException("Order Not Found"));
-			if(orderToUpdate.getStatus().equals(ApplicationConstants.CONFIRMADO) || order.getCardNumber().length() < 12) {
+			if (orderToUpdate.getStatus().equals(ApplicationConstants.CONFIRMADO)
+					|| order.getCardNumber().length() < 12) {
 				throw new IllegalArgumentException("Error in paying order");
 			}
 			Orders orderSaved = repository.save(ApplicationUtils.updateOrderPayment(orderToUpdate, order));
@@ -140,7 +153,7 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		OrderServiceImpl.log.info("IN - Get Order by Status");
 
-		return repository.findByStatus(status);
+		return repository.findAllOrdersByStatus(status);
 	}
 
 }

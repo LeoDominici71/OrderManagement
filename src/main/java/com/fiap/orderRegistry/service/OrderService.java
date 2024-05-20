@@ -25,5 +25,8 @@ public interface OrderService {
 	List<Orders> getAllOrdersByStatus(String status);
 	
 	Orders payOrder(Long id, OrderRequestPayment order);
+	
+	void saveAllOrders(List<Orders> orders);
+
 
 }

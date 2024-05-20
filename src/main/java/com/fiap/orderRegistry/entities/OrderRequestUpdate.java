@@ -9,5 +9,6 @@ public class OrderRequestUpdate {
 
 	private String status;
 	private String expectedTimeToDeliver;
+	private String localization;
 
 }
